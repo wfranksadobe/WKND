@@ -39,14 +39,14 @@ window.hlx.plugins.add('rum-conversion', {
   load: 'lazy',
 });
 
-window.hlx.plugins.add('experimentation', {
-  condition: () => getMetadata('experiment')
-    || Object.keys(getAllMetadata('campaign')).length
-    || Object.keys(getAllMetadata('audience')).length,
-  options: { audiences: AUDIENCES },
-  load: 'eager',
-  url: '/plugins/experimentation/src/index.js',
-});
+// window.hlx.plugins.add('experimentation', {
+//   condition: () => getMetadata('experiment')
+//     || Object.keys(getAllMetadata('campaign')).length
+//     || Object.keys(getAllMetadata('audience')).length,
+//   options: { audiences: AUDIENCES },
+//   load: 'eager',
+//   url: '/plugins/experimentation/src/index.js',
+// });
 
 /**
  * Determine if we are serving content for the block-library, if so don't load the header or footer
@@ -182,6 +182,22 @@ export function decorateMain(main) {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
+  window.targetGlobalSettings = {
+    clientCode: 'sitesinternal',
+    cookieDomain: 'target-integration4--wknd--hlxsites.hlx.live',
+    imsOrgId: '908936ED5D35CC220A495CD4@AdobeOrg',
+    secureOnly: true,
+    serverDomain: 'sitesinternal.tt.omtrdc.net',
+    bodyHidingEnabled: false,
+  };
+  // const link = document.createElement('link');
+  // link.setAttribute('rel', 'preconnect');
+  // link.setAttribute('href', 'https://sitesinternal.tt.omtrdc.net');
+  // link.setAttribute('as', 'fetch');
+  // link.setAttribute('crossorigin', true);
+  // link.setAttribute('fetchpriority', 'high');
+  // document.head.append(link);
+  await import('./at.js');
 
   await window.hlx.plugins.run('loadEager');
 
